@@ -1,6 +1,5 @@
-package Assignment_StrategyPattern;
+package Assignment_StrategyPattern.src;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {

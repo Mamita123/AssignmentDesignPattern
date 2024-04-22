@@ -1,4 +1,4 @@
-package Assignment_StrategyPattern;
+package Assignment_StrategyPattern.src;
 
 public class SortingContext {
 
