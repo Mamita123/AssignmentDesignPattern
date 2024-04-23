@@ -2,7 +2,7 @@ package org.example.prototype;
 
 import java.util.Objects;
 
-public class Book implements Cloneable{
+public class Book implements Cloneable {
     private String title;
     private String author;
     private String genre;
@@ -27,7 +27,6 @@ public class Book implements Cloneable{
         }
     }
 
-    // Getters and setters (optional)
 
     @Override
     public String toString() {
@@ -55,3 +54,5 @@ public class Book implements Cloneable{
         return Objects.hash(title, author, genre, publicationYear);
     }
 }
+
+
