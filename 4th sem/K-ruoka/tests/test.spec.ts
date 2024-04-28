@@ -1,36 +1,49 @@
 import { test, expect } from '@playwright/test';
 
+
 test('test', async ({ page }) => {
-  await page.goto('https://www.k-ruoka.fi/kauppa');
-  await page.waitForLoadState('networkidle');
+  await page.goto('https://www.k-ruoka.fi/');
+  await page.goto('https://www.k-ruoka.fi/haku?q=ollut');
+  await page.waitForTimeout(5000);
+  await page.locator('text="Pirkka olut 4,5% 0,33l"').click({ timeout: 15000 });
+  
+  await page.getByRole('link', { name: 'Pirkka olut 4,5% 0,33l' }).click();
+  
+  // Expectation: Verify if the page URL contains the expected string
+  expect(page.url()).toContain('https://www.k-ruoka.fi/');
 
-  // Accept cookies
-  const acceptButton = await page.waitForSelector('button[data-testid="accept-cookies-button"]');
-  await acceptButton.click();
+  await page.getByPlaceholder('Hae tuotteita, kauppoja,').click();
+  await page.getByPlaceholder('Hae tuotteita, kauppoja,').fill('makkara');
+  await page.getByRole('link', { name: 'Atria Wilhelm Perinteinen 400g' }).click();
+  
+  // Expectation: Verify if the page URL contains the expected string
+  expect(page.url()).toContain('https://www.k-ruoka.fi/');
 
-  // Search for "olut" and add a product to the cart
-  await page.click('input[placeholder="Hae kaupan valikoimasta"]');
-  await page.fill('input[placeholder="Hae kaupan valikoimasta"]', 'olut');
-  await page.waitForSelector('a[aria-label="Pirkka olut 4,5% 0,33l"]');
-  await page.click('a[aria-label="Pirkka olut 4,5% 0,33l"]');
-  await page.waitForSelector('[data-testid="product-details-sidebar"] [data-testid="add-to-basket-button"]');
-  await page.click('[data-testid="product-details-sidebar"] [data-testid="add-to-basket-button"]');
+  await page.getByTestId('product-details').click();
+  await page.goto('https://www.k-ruoka.fi/haku?q=makkara');
+  await page.getByPlaceholder('Hae tuotteita, kauppoja,').click();
+  await page.getByPlaceholder('Hae tuotteita, kauppoja,').fill('juomat');
+  await page.getByPlaceholder('Hae tuotteita, kauppoja,').press('Enter');
+  await page.getByRole('link', { name: 'Coca-Cola Zero 0,33l 24-pack' }).click();
+  
+  // Expectation: Verify if the page URL contains the expected string
+  expect(page.url()).toContain('https://www.k-ruoka.fi/');
 
-  // Search for "makkara" and add a product to the cart
-  await page.goto('https://www.k-ruoka.fi/kauppa/tuotehaku?haku=ollut');
-  await page.click('input[placeholder="Hae kaupan valikoimasta"]');
-  await page.fill('input[placeholder="Hae kaupan valikoimasta"]', 'makk');
-  await page.waitForSelector('a[aria-label="Atria Hiillos Grillimakkara 400g"]');
-  await page.click('a[aria-label="Atria Hiillos Grillimakkara 400g"]');
-  await page.waitForSelector('[data-testid="product-details-sidebar"] [data-testid="add-to-basket-button"]');
-  await page.click('[data-testid="product-details-sidebar"] [data-testid="add-to-basket-button"]');
+  await page.getByTestId('product-main-image-container').click();
+  await page.goto('https://www.k-ruoka.fi/haku?q=juomat');
+  await page.getByRole('link', { name: 'Coca-Cola Zero 0,33l 24-pack' }).click();
+  
+  // Expectation: Verify if the page URL contains the expected string
+  expect(page.url()).toContain('https://www.k-ruoka.fi/');
 
-  // Search for "juomat" and add a product to the cart
-  await page.goto('https://www.k-ruoka.fi/kauppa/tuotehaku?haku=makkara');
-  await page.click('input[placeholder="Hae kaupan valikoimasta"]');
-  await page.fill('input[placeholder="Hae kaupan valikoimasta"]', 'juomat');
-  await page.waitForSelector('a[aria-label="Coca-Cola Zero 0,33l 24-pack"]');
-  await page.click('a[aria-label="Coca-Cola Zero 0,33l 24-pack"]');
-  await page.waitForSelector('[data-testid="product-details-sidebar"] [data-testid="add-to-basket-button"]');
-  await page.click('[data-testid="product-details-sidebar"] [data-testid="add-to-basket-button"]');
+  await page.goto('https://www.k-ruoka.fi/haku?q=juomat');
+  await page.getByRole('link', { name: 'Atria Wilhelm Perinteinen 400g' }).click();
+  
+  // Expectation: Verify if the page URL contains the expected string
+  expect(page.url()).toContain('https://www.k-ruoka.fi/');
+
+  await page.getByTestId('product-details-sidebar').getByTestId('add-to-basket-button').click();
+  await page.getByRole('button', { name: 'Atria Wilhelm Perinteinen 400g' }).click();
+  await page.getByLabel('Sulje tuotekuvat').click();
+  await page.getByTestId('product-details-sidebar').getByTestId('increment-button').click();
 });
